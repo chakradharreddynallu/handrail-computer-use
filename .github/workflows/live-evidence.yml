@@ -1,0 +1,50 @@
+name: Live discovery evidence
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Capture real discovery and deterministic replay
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4o-mini
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo 'Add the OPENAI_API_KEY repository secret before running this workflow.'
+            exit 1
+          fi
+          node sandbox/server.js > /tmp/handrail-sandbox.log 2>&1 &
+          sandbox_pid=$!
+          trap 'kill "$sandbox_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run discover -- --goal 'Look up the supplied member and return their current savings balance and currency.' --member 10001 --artifact evidence/capability.json
+          unset OPENAI_API_KEY
+          npm run replay -- --artifact evidence/capability.json --member 10002
+          npm run replay -- --artifact evidence/capability.json --member 99999
+          npm run check:submission
+      - name: Save evidence for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-discovery-evidence
+          path: |
+            evidence/capability.json
+            evidence/*.jsonl
+            evidence/failure-*.json
+          if-no-files-found: warn
+          retention-days: 7
