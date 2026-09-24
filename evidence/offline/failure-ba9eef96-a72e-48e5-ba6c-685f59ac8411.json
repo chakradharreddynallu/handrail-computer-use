@@ -1,0 +1,25 @@
+{
+  "format": "allowlisted-ui-snapshot-v1",
+  "surface": "browser",
+  "binding_version": "1.0",
+  "state": "app_error",
+  "controls": [
+    "back"
+  ],
+  "frame_count": 2,
+  "nodes": [
+    {
+      "target": "back",
+      "role": "button",
+      "count": 1,
+      "enabled": true,
+      "box": {
+        "x": 64,
+        "y": 174.90625,
+        "width": 138.234375,
+        "height": 39
+      }
+    }
+  ],
+  "values": "omitted_by_construction"
+}
