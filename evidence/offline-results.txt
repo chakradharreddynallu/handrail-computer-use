@@ -1,0 +1,13 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> handrail-computer-use@1.0.0 demo:offline
+> node scripts/offline.js
+
+scripted-discovery: success
+replay: success
+not-found: business_outcome / member_not_found
+slow: success
+notice: success
+handoff: success
+app-error: failure / intervention_required
+dialog: failure / intervention_required
