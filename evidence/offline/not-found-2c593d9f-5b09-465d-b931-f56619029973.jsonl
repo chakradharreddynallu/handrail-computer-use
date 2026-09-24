@@ -1,0 +1,7 @@
+{"at":"2026-09-23T21:25:41.945Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"run_started","kind":"not-found"}
+{"at":"2026-09-23T21:25:41.945Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"provenance","model":"NONE","driver":"scripted-test","human":"none"}
+{"at":"2026-09-23T21:25:42.131Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"action_started","step":0,"action":"fill","target":"memberNumber","parameter":"member_id","expected":"memberNumber","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:25:42.148Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"action_completed","step":0,"action":"fill","target":"memberNumber"}
+{"at":"2026-09-23T21:25:42.210Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"action_started","step":1,"action":"click","target":"search","expected":"search","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:25:42.247Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"action_completed","step":1,"action":"click","target":"search"}
+{"at":"2026-09-23T21:25:42.272Z","run_id":"2c593d9f-5b09-465d-b931-f56619029973","event":"run_completed","status":"business_outcome","code":"member_not_found","step":2}
