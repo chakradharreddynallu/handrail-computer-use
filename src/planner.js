@@ -41,7 +41,20 @@ export class OpenAIPlanner {
         ],
       }),
     });
-    if (!response.ok) throw new Fault("model_request_failed");
+    if (!response.ok) {
+      // Log only fixed categories; provider messages can echo credentials or input.
+      let providerCode;
+      try { providerCode = (await response.json())?.error?.code; } catch {}
+      const allowedCodes = new Set([
+        "invalid_api_key", "insufficient_quota", "rate_limit_exceeded",
+        "model_not_found", "permission_denied", "account_deactivated",
+      ]);
+      this.evidence.emit("model_request_failed", {
+        http_status: Number.isInteger(response.status) ? response.status : 0,
+        provider_code: allowedCodes.has(providerCode) ? providerCode : "unclassified",
+      });
+      throw new Fault("model_request_failed");
+    }
     const data = await response.json();
     this.evidence.emit("model_call", {
       provider: "openai",
