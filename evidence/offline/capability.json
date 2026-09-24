@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "name": "read_savings_balance",
+  "version": 1,
+  "application": {
+    "family": "legacy-servicing-demo",
+    "binding_version": "1.0"
+  },
+  "inputs": {
+    "member_id": {
+      "type": "string",
+      "pattern": "^[0-9]{5}$",
+      "sensitive": true
+    }
+  },
+  "outputs": {
+    "balance": {
+      "type": "decimal",
+      "scale": 2,
+      "sensitive": true
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ]
+    }
+  },
+  "steps": [
+    {
+      "action": "fill",
+      "target": "memberNumber",
+      "parameter": "member_id"
+    },
+    {
+      "action": "click",
+      "target": "search"
+    },
+    {
+      "action": "click",
+      "target": "openMember"
+    },
+    {
+      "action": "click",
+      "target": "savings"
+    },
+    {
+      "action": "extract",
+      "target": "balance",
+      "output": "balance"
+    },
+    {
+      "action": "extract",
+      "target": "currency",
+      "output": "currency"
+    }
+  ],
+  "checkpoint": "savings_verified",
+  "targeting": {
+    "strategy": "trusted-binding-reference",
+    "binding": "legacy-servicing-demo@1.0"
+  },
+  "risk": "read_only"
+}
