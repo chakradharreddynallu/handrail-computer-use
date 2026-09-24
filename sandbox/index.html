@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Handrail | Legacy servicing sandbox</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eef2f6;
+      font: 16px system-ui;
+      color: #163047;
+    }
+    header {
+      background: #143246;
+      color: white;
+      padding: 22px 36px;
+    }
+    small {
+      float: right;
+      color: #a6dcca;
+    }
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 670px;
+    }
+  </style>
+  <header>
+    <b>HANDRAIL / MEMBER SERVICING</b
+    ><small>LOCAL DEMO · SYNTHETIC DATA ONLY</small>
+  </header>
+  <iframe title="Legacy servicing" src="/legacy"></iframe>
+  <script>
+    document.querySelector("iframe").src = "/legacy" + location.search;
+  </script>
+</html>
