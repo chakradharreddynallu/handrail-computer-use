@@ -14,11 +14,11 @@
 
 - Genuine OpenAI API-driven discovery. No model API key was configured during this build.
 - A real person's interactive console or headed-window takeover. The mechanism is implemented and exercised with a simulated operator in the integration test.
-- A GitHub-hosted CI run or submission email.
+- Submission email.
 
 ## Publication update — 2026-09-24
 
-The project is being published to `chakradharreddynallu/handrail-computer-use`. A manual **Live discovery evidence** workflow is included to capture real model evidence after the repository secret is configured. No live model run is claimed by this publication.
+The project is public at https://github.com/chakradharreddynallu/handrail-computer-use. GitHub-hosted CI passed on commit `c28dcb547b36730ccca9251525516de7d52cce87`, using Node 22 and the normal Playwright Chromium installation: https://github.com/chakradharreddynallu/handrail-computer-use/actions/runs/36012085584. A manual **Live discovery evidence** workflow is included to capture real model evidence after the repository secret is configured. No live model run is claimed by this publication.
 
 ## Required before submission
 
