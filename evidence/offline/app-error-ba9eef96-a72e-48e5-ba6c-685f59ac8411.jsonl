@@ -1,0 +1,10 @@
+{"at":"2026-09-23T21:27:33.918Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"run_started","kind":"app-error"}
+{"at":"2026-09-23T21:27:33.918Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"provenance","model":"NONE","driver":"scripted-test","human":"none"}
+{"at":"2026-09-23T21:27:34.128Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"action_started","step":0,"action":"fill","target":"memberNumber","parameter":"member_id","expected":"memberNumber","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:27:34.144Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"action_completed","step":0,"action":"fill","target":"memberNumber"}
+{"at":"2026-09-23T21:27:34.205Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"action_started","step":1,"action":"click","target":"search","expected":"search","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:27:34.249Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"action_completed","step":1,"action":"click","target":"search"}
+{"at":"2026-09-23T21:27:34.293Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"intervention_requested","intervention_id":"79eb7568-9800-44f9-8c21-762b1c99f53f","reason":"app_error","step":2,"observed":{"surface":"browser","binding_version":"1.0","state":"app_error","controls":["back"]},"capability":"read_savings_balance"}
+{"at":"2026-09-23T21:27:34.355Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"failure_evidence","file":"failure-ba9eef96-a72e-48e5-ba6c-685f59ac8411.json"}
+{"at":"2026-09-23T21:27:34.436Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"failure_evidence","file":"failure-ba9eef96-a72e-48e5-ba6c-685f59ac8411.json"}
+{"at":"2026-09-23T21:27:34.436Z","run_id":"ba9eef96-a72e-48e5-ba6c-685f59ac8411","event":"run_completed","status":"failure","code":"intervention_required","step":2,"expected":"openMember","observed":{"surface":"browser","binding_version":"1.0","state":"app_error","controls":["back"]}}
