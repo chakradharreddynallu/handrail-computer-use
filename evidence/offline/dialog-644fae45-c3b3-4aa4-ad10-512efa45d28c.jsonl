@@ -1,0 +1,13 @@
+{"at":"2026-09-23T21:27:34.452Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"run_started","kind":"dialog"}
+{"at":"2026-09-23T21:27:34.452Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"provenance","model":"NONE","driver":"scripted-test","human":"none"}
+{"at":"2026-09-23T21:27:34.671Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_started","step":0,"action":"fill","target":"memberNumber","parameter":"member_id","expected":"memberNumber","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:27:34.683Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_completed","step":0,"action":"fill","target":"memberNumber"}
+{"at":"2026-09-23T21:27:34.736Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_started","step":1,"action":"click","target":"search","expected":"search","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-23T21:27:34.778Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_completed","step":1,"action":"click","target":"search"}
+{"at":"2026-09-23T21:27:34.823Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_started","step":2,"action":"click","target":"openMember","expected":"openMember","observed":{"surface":"browser","binding_version":"1.0","state":"results","controls":["openMember"]}}
+{"at":"2026-09-23T21:27:34.848Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"unexpected_dialog","action":"dismissed_without_accepting"}
+{"at":"2026-09-23T21:27:34.849Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"action_completed","step":2,"action":"click","target":"openMember"}
+{"at":"2026-09-23T21:27:34.882Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"intervention_requested","intervention_id":"ce2ed1a5-4ed2-4019-a1e5-7efd7b9033c1","reason":"unexpected_dialog","step":3,"observed":{"surface":"browser","binding_version":"1.0","state":"unexpected_dialog","controls":["openMember"]},"capability":"read_savings_balance"}
+{"at":"2026-09-23T21:27:34.952Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"failure_evidence","file":"failure-644fae45-c3b3-4aa4-ad10-512efa45d28c.json"}
+{"at":"2026-09-23T21:27:35.024Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"failure_evidence","file":"failure-644fae45-c3b3-4aa4-ad10-512efa45d28c.json"}
+{"at":"2026-09-23T21:27:35.024Z","run_id":"644fae45-c3b3-4aa4-ad10-512efa45d28c","event":"run_completed","status":"failure","code":"intervention_required","step":3,"expected":"savings","observed":{"surface":"browser","binding_version":"1.0","state":"unexpected_dialog","controls":["openMember"]}}
