@@ -1,0 +1,24 @@
+{
+  "name": "handrail-computer-use",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Policy-controlled UI discovery and deterministic capability replay",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "sandbox": "node sandbox/server.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "demo:offline": "node scripts/offline.js",
+    "discover": "node src/cli.js discover",
+    "replay": "node src/cli.js replay",
+    "check:submission": "node scripts/check-submission.js"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}
