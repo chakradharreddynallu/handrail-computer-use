@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Legacy workstation</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      color: #193448;
+      padding: 28px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 650px;
+    }
+    td {
+      padding: 14px;
+      border-bottom: 1px solid #d6e0e6;
+    }
+    button,
+    input {
+      font: inherit;
+      padding: 10px;
+      margin: 5px;
+    }
+    button {
+      background: #126b65;
+      color: white;
+      border: 0;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    section {
+      background: white;
+      border: 1px solid #d6e0e6;
+      padding: 22px;
+      max-width: 740px;
+    }
+    .error {
+      color: #a22626;
+    }
+    aside {
+      color: #566774;
+      margin-top: 22px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+  <main></main>
+  <aside>Sandbox records: 10001, 10002. This screen has no business API.</aside>
+  <script>
+    const fault = new URLSearchParams(location.search).get("fault") || "none";
+    const main = document.querySelector("main");
+    let member = "",
+      expired = false,
+      notice = false;
+    const balances = { 10001: "1234.56", 10002: "987.65" };
+    function search() {
+      main.innerHTML =
+        '<section><h2>Member search</h2><table><tr><td><label for="m">Member number</label></td><td><input id="m" autocomplete="off"></td></tr></table><button>Search</button><p role="status">Ready</p></section>';
+      main.querySelector("button").onclick = lookup;
+    }
+    function lookup() {
+      member = main.querySelector("input").value;
+      if (fault === "session" && !expired) {
+        expired = true;
+        main.innerHTML =
+          "<section><h2>Session expired</h2><button>Restore demo session</button></section>";
+        main.querySelector("button").onclick = search;
+        return;
+      }
+      if (fault === "slow") {
+        main.querySelector("[role=status]").textContent = "Loading";
+        setTimeout(result, 650);
+        return;
+      }
+      result();
+    }
+    function result() {
+      let err = "";
+      if (!/^\d{5}$/.test(member)) err = "Invalid member number";
+      else if (fault === "denied") err = "Permission denied";
+      else if (fault === "crash") err = "Application unavailable";
+      else if (!balances[member]) err = "Member not found";
+      if (err) {
+        main.innerHTML =
+          "<section><h2>" +
+          err +
+          "</h2><button>Back to search</button></section>";
+        main.querySelector("button").onclick = search;
+        return;
+      }
+      main.innerHTML =
+        "<section><h2>Search results</h2><table><tr><td>Matching member</td><td><button>Open member</button></td></tr></table></section>";
+      main.querySelector("button").onclick = detail;
+    }
+    function detail() {
+      if (fault === "dialog") {
+        alert("Unrecognized confirmation: continue?");
+        return;
+      }
+      if (fault === "notice" && !notice) {
+        notice = true;
+        main.innerHTML =
+          "<section><h2>Read-only notice</h2><p>This workstation is in inquiry mode.</p><button>Dismiss notice</button></section>";
+        main.querySelector("button").onclick = detail;
+        return;
+      }
+      main.innerHTML =
+        "<section><h2>Member details</h2><table><tr><td>Accounts</td><td><button>Savings</button></td></tr></table><button>Transfer funds</button></section>";
+      main.querySelector("button").onclick = savings;
+      main.querySelectorAll("button")[1].onclick = () => {
+        main.innerHTML = "<h2>Transfer confirmation</h2>";
+      };
+    }
+    function savings() {
+      main.innerHTML =
+        '<section><h2>Savings overview</h2><table><tr><td>Current balance</td><td><output aria-label="Current balance">' +
+        balances[member] +
+        '</output></td></tr><tr><td>Currency</td><td><output aria-label="Currency">USD</output></td></tr></table><p role="status">Balance verified</p></section>';
+    }
+    search();
+  </script>
+</html>
