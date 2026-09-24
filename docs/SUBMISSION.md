@@ -29,7 +29,7 @@ Hi interface.ai Recruiting Team,
 
 Please find my Computer-Use Automation System assignment here:
 
-[REPLACE WITH YOUR PUBLIC GITHUB REPOSITORY URL]
+https://github.com/chakradharreddynallu/handrail-computer-use
 
 The repository includes setup and demo commands, the design report, tests, and discovery/replay evidence.
 
