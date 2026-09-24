@@ -1,0 +1,38 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> handrail-computer-use@1.0.0 test
+> node --test --test-concurrency=1 tests/*.test.js
+
+✔ live iframe UI: scripted discovery then parameterized replay (1799.997154ms)
+✔ runtime none/99999 (348.994106ms)
+✔ runtime denied/10001 (406.502813ms)
+✔ runtime crash/10001 (518.254163ms)
+✔ runtime dialog/10001 (672.407336ms)
+✔ runtime none/abc (304.418024ms)
+✔ bounded recovery slow (1516.034101ms)
+✔ bounded recovery notice (723.363994ms)
+✔ same browser session hands off and resumes; operator simulated in test only (1016.454619ms)
+✔ unexpected outbound request is blocked before reaching a server (174.996661ms)
+✔ schema rejects literal values, unknown versions, arbitrary selectors and outputs (2.280149ms)
+✔ origin, credentials, paths, query, protocol and action guardrails (0.633997ms)
+✔ replay returns typed outputs without a planner and never logs sensitive values (2.451242ms)
+✔ business not-found is not a hard failure (1.855833ms)
+✔ whole artifact policy checked before action; risky tail cannot execute a prefix (1.610419ms)
+✔ real control-transfer logic uses same surface and rejects stale resume (1.214875ms)
+✔ handoff expires and rejects late operator actions (10.385286ms)
+✔ session restoration restarts only read-only flow with bounded retries (2.042608ms)
+✔ scripted discovery serializes parameters, not invocation values (0.871087ms)
+✔ malformed model output fails closed (1.572042ms)
+✔ false finish is rejected without required outputs (0.827048ms)
+✔ failed checkpoint prevents a success response (0.834253ms)
+✔ ambiguous action failures never retry potentially committed clicks (0.772913ms)
+✔ provider adapter validates real API-shaped response; mock is not live evidence (2.378855ms)
+✔ portable schemas accept saved capability/results and reject secret-bearing extras (54.922566ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8132.28573
