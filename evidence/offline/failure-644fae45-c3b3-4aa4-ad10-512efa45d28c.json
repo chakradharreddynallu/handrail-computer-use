@@ -1,0 +1,25 @@
+{
+  "format": "allowlisted-ui-snapshot-v1",
+  "surface": "browser",
+  "binding_version": "1.0",
+  "state": "unexpected_dialog",
+  "controls": [
+    "openMember"
+  ],
+  "frame_count": 2,
+  "nodes": [
+    {
+      "target": "openMember",
+      "role": "button",
+      "count": 1,
+      "enabled": true,
+      "box": {
+        "x": 403.765625,
+        "y": 188.90625,
+        "width": 135.421875,
+        "height": 39
+      }
+    }
+  ],
+  "values": "omitted_by_construction"
+}
