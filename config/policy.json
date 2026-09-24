@@ -1,0 +1,6 @@
+{
+  "paths": ["/", "/legacy"],
+  "actions": ["fill", "click", "extract"],
+  "blockedTargets": ["transfer"],
+  "faults": ["none", "slow", "notice", "session", "denied", "crash", "dialog"]
+}
