@@ -48,6 +48,8 @@ export class OpenAIPlanner {
       const allowedCodes = new Set([
         "invalid_api_key", "insufficient_quota", "rate_limit_exceeded",
         "model_not_found", "permission_denied", "account_deactivated",
+        "credit_balance_exhausted", "organization_usage_limit_exceeded",
+        "organization_spend_limit_exceeded", "project_spend_limit_exceeded", "slow_down",
       ]);
       this.evidence.emit("model_request_failed", {
         http_status: Number.isInteger(response.status) ? response.status : 0,
