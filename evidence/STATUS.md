@@ -12,7 +12,7 @@
 
 ## Not yet executed / not claimed
 
-- Genuine OpenAI API-driven discovery. No model API key was configured during this build.
+- Successful OpenAI API-driven discovery. The key is configured, but the live run on 2026-09-25 failed at step 0 with HTTP 429 / `credit_balance_exhausted`. No successful live discovery or replay is claimed.
 - A real person's interactive console or headed-window takeover. The mechanism is implemented and exercised with a simulated operator in the integration test.
 - Submission email.
 
@@ -29,3 +29,7 @@ The project is public at https://github.com/chakradharreddynallu/handrail-comput
 5. Publish and review the public repository, then email its URL from your application address.
 
 The check currently fails intentionally because required live evidence is missing. The project is an implemented, tested candidate submission, not a claim that every submission gate is complete or that any score is guaranteed.
+
+## Live API attempt — 2026-09-25
+
+Run https://github.com/chakradharreddynallu/handrail-computer-use/actions/runs/36098394091 reached the provider and stopped safely before a UI action. The sanitized evidence reports `credit_balance_exhausted` (HTTP 429). Restore API credits before retrying. Diagnostic code records only allowlisted error codes and HTTP status; it excludes provider messages and credentials.
