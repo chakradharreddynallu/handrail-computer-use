@@ -22,14 +22,18 @@ const reply = (text, extra = {}) => ({
 const ok = (decision, extra) => reply(JSON.stringify(decision), extra);
 async function withGemini(fn) {
   const oldFetch = globalThis.fetch,
-    oldKey = process.env.GEMINI_API_KEY;
+    oldKey = process.env.GEMINI_API_KEY,
+    oldModel = process.env.GEMINI_MODEL;
   process.env.GEMINI_API_KEY = "test-only-gemini-key";
+  delete process.env.GEMINI_MODEL; // tests see the built-in default unless they set it
   try {
     await fn();
   } finally {
     globalThis.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.GEMINI_API_KEY;
     else process.env.GEMINI_API_KEY = oldKey;
+    if (oldModel === undefined) delete process.env.GEMINI_MODEL;
+    else process.env.GEMINI_MODEL = oldModel;
   }
 }
 const sink = (events) => ({ emit: (event, fields) => events.push({ event, ...fields }) });
@@ -40,7 +44,7 @@ test("gemini adapter sends schema-constrained request without secrets or literal
     globalThis.fetch = async (url, options) => {
       assert.equal(
         url,
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
       );
       assert.ok(!url.includes("key="));
       assert.equal(options.headers["x-goog-api-key"], "test-only-gemini-key");
@@ -53,10 +57,8 @@ test("gemini adapter sends schema-constrained request without secrets or literal
       assert.ok(!options.body.includes("test-only-gemini-key"));
       return ok({ action: "fill", target: "memberNumber", parameter: "member_id", reason: "enter_parameter" });
     };
-    const planner = new GeminiPlanner("Read savings balance", sink(events), {
-      model: "gemini-2.5-flash",
-      minIntervalMs: 0,
-    });
+    // No model option and no GEMINI_MODEL: exercises the built-in default.
+    const planner = new GeminiPlanner("Read savings balance", sink(events), { minIntervalMs: 0 });
     const decision = await planner.decide(state);
     assert.equal(decision.action, "fill");
     assert.equal(events[0].event, "model_call");

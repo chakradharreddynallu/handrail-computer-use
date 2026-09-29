@@ -1,0 +1,6 @@
+{"at":"2026-09-29T03:55:11.673Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"run_started","kind":"replay"}
+{"at":"2026-09-29T03:55:11.931Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"action_started","step":0,"action":"fill","target":"memberNumber","parameter":"member_id","expected":"memberNumber","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-29T03:55:11.944Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"action_completed","step":0,"action":"fill","target":"memberNumber"}
+{"at":"2026-09-29T03:55:11.985Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"action_started","step":1,"action":"click","target":"search","expected":"search","observed":{"surface":"browser","binding_version":"1.0","state":"search","controls":["memberNumber","search"]}}
+{"at":"2026-09-29T03:55:12.035Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"action_completed","step":1,"action":"click","target":"search"}
+{"at":"2026-09-29T03:55:12.060Z","run_id":"c4f1617d-0a1a-42ac-acfe-105c62e81c51","event":"run_completed","status":"business_outcome","code":"member_not_found","step":2}

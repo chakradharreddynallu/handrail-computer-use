@@ -28,7 +28,7 @@ export class GeminiPlanner {
     goal,
     evidence,
     {
-      model = process.env.GEMINI_MODEL || "gemini-2.5-flash",
+      model = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite",
       // Free-tier per-minute quotas are small; pacing avoids 429s. Model calls have no UI side effects.
       minIntervalMs = Number(process.env.GEMINI_MIN_INTERVAL_MS ?? 6500),
       maxRetryMs = 60000,
