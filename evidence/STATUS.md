@@ -13,7 +13,7 @@
 ## Not yet executed / not claimed
 
 - Successful OpenAI API-driven discovery. The key is configured, but the live run on 2026-09-25 failed at step 0 with HTTP 429 / `credit_balance_exhausted`. Live discovery was later completed with Gemini instead; see "Live Gemini discovery and replay — 2026-09-29" below. No successful OpenAI run is claimed.
-- A real person's interactive console or headed-window takeover. The mechanism is implemented and exercised with a simulated operator in the integration test.
+- ~~A real person's interactive console or headed-window takeover.~~ Completed on 2026-09-29; see "Real human takeover — 2026-09-29" below.
 - Submission email.
 
 ## Publication update — 2026-09-24
@@ -28,7 +28,7 @@ The project is public at https://github.com/chakradharreddynallu/handrail-comput
 4. Update this status with the actual runs performed; do not relabel scripted evidence.
 5. Publish and review the public repository, then email its URL from your application address.
 
-As of 2026-09-29 the check passes with the Gemini evidence below, and items 1, 3 and 4 are done. Items 2 (a real person's takeover demo) and 5 (publish and email) remain open. The project is an implemented, tested candidate submission, not a claim that every submission gate is complete or that any score is guaranteed.
+As of 2026-09-29 the check passes with the Gemini evidence below, and items 1–4 are done, including the real-person takeover (item 2). Item 5 remains open: the repository is public, but the submission email has not been sent. The project is an implemented, tested candidate submission, not a claim that every submission gate is complete or that any score is guaranteed.
 
 ## Live API attempt — 2026-09-25
 
@@ -45,3 +45,9 @@ Run locally on Windows 11, Node.js 24.19.0, Playwright 1.62.1 with its normal Ch
 - **`npm run check:submission` passes:** "Local evidence checks passed."
 - `npm test` on this machine: 35/35 passing after these changes. `test-results.txt` is the earlier build-environment record and predates the Gemini tests.
 - The live logs and artifact were scanned for synthetic member IDs, amounts and key patterns; none were present.
+
+## Real human takeover — 2026-09-29
+
+A real person, not a simulated operator, completed the same-session handoff: `replay-2010204f-aa56-4d49-ae67-fbabe664c51d.jsonl`, with the paused-state snapshot `failure-2010204f-aa56-4d49-ae67-fbabe664c51d.json`. The command was `replay --artifact evidence/capability.json --member 10002 --target "http://127.0.0.1:4173/?fault=session" --interactive --headed`, with no model or API key involved.
+
+Flow: session expiry → intervention requested (`intervention_requested`, `reason: session_expired`) → the human took control of the same headed browser (`control_transferred` to `human`) → manual click on **Restore demo session** (`human_ui_event`, `target: restoreSession`, `values: not_collected`) → `resume` with the matching intervention ID → automation regained control (`control_transferred` to `automation`, then `recovery: read_only_restart`) → final `success` at step 6 with both outputs extracted. The log records no typed values, member IDs or balances.
