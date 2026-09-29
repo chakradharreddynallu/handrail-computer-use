@@ -41,9 +41,30 @@ npm run replay -- --artifact evidence/capability.json --member 99999
 npm run check:submission
 ```
 
-The model chooses each next action from the observed UI and completed actions. It receives symbolic parameter names, not member numbers or balances. API request IDs and usage are logged; raw prompts/responses and goals are not persisted. `store:false` is sent, but it is not a promise of zero provider retention. Only synthetic data is permitted in this demo.
+The model chooses each next action from the observed UI and completed actions. It receives symbolic parameter names, not member numbers or balances. API request IDs and usage are logged; raw prompts/responses and goals are not persisted. For OpenAI, `store:false` is sent, but it is not a promise of zero provider retention. Only synthetic data is permitted in this demo.
 
 On Windows, WSL is the easiest way to use these commands. Alternatively set the key in your PowerShell environment privately and run the same npm commands. The CLI does not auto-load `.env` files.
+
+### Discovery providers: OpenAI (default) or Gemini
+
+Discovery supports two interchangeable planners behind `--provider`: `openai` (the default, `OPENAI_API_KEY`, optional `OPENAI_MODEL`) and `gemini` (`GEMINI_API_KEY`, optional `GEMINI_MODEL`, default `gemini-2.5-flash`). Both receive the same shared system prompt and symbolic observation, and every decision passes the same `validateDecision()` contract before the engine acts. An unknown provider name, or a missing key for the chosen provider, stops with a setup failure before any model request.
+
+The Gemini adapter (`src/gemini-planner.js`) calls `generateContent` with `responseJsonSchema`, so generation is constrained to the decision shape and the `transfer` target is never offered; runtime validation still decides. The key is sent in the `x-goog-api-key` header, never the URL. Evidence records Gemini's `responseId` as the request ID, the model version, and token counts only. Calls are paced (`GEMINI_MIN_INTERVAL_MS`, default 6500 ms) to fit free-tier per-minute quotas, and an HTTP 429 is retried once; re-asking the model cannot repeat a UI action. Gemini discovery gets a 180-second run budget for that pacing; OpenAI discovery and replay keep the 30-second default. Gemini's free tier may use submitted content to improve Google products, which is acceptable here only because every value is synthetic.
+
+PowerShell, entering the key privately for the current session only:
+
+```powershell
+npm run sandbox   # terminal 1
+$k = Read-Host 'Gemini API key' -AsSecureString
+$env:GEMINI_API_KEY = [System.Net.NetworkCredential]::new('', $k).Password
+npm run discover -- --provider gemini --goal "Look up the supplied member and return their current savings balance and currency." --member 10001 --artifact evidence/capability.json
+Remove-Item Env:GEMINI_API_KEY
+npm run replay -- --artifact evidence/capability.json --member 10002
+npm run replay -- --artifact evidence/capability.json --member 99999
+npm run check:submission
+```
+
+**Replay needs no model key and makes zero model calls.** Neither `GEMINI_API_KEY` nor `OPENAI_API_KEY` is required: the CLI loads a planner only in `discover` mode, and replay ignores `--provider`. `tests/cli.test.js` runs the real CLI with both keys removed and asserts that replay succeeds, loads no planner module, and sends no provider request.
 
 Outputs are returned as typed values by `Engine.run()`. CLI output is redacted by default; append `--show-outputs` only for these synthetic examples. Decimal balances are strings to avoid binary floating-point rounding. Unknown members are a `business_outcome`, not an exception or success with empty outputs. Failures exit 1; business outcomes exit 0 and are distinguished by status.
 
@@ -88,7 +109,7 @@ Invalid input is rejected before typing. `Transfer funds` is visible in the app 
 - `src/contracts.js`, `schemas/`: typed runtime contracts and portable JSON schemas.
 - `src/engine.js`: bounded discovery/replay orchestration and result taxonomy.
 - `src/surface.js`: Playwright iframe adapter and reviewed locator bindings.
-- `src/planner.js`: the only live model dependency; dynamically loaded for discovery.
+- `src/planner.js`, `src/gemini-planner.js`: the only live model dependencies (OpenAI, Gemini, sharing one prompt); dynamically loaded for discovery only.
 - `src/handoff.js`: ownership state machine and minimal operator console.
 - `src/policy.js`, `src/evidence.js`: allowlists and data-minimizing evidence.
 - `sandbox/`: synthetic legacy-style application, no business API.
@@ -103,8 +124,8 @@ Read `docs/SUBMISSION.md`. Push the project root to a public GitHub repository. 
 
 ## Provider reference
 
-The discovery adapter uses the [OpenAI API](https://platform.openai.com/docs/api-reference/introduction) and [JSON output mode](https://developers.openai.com/api/docs/guides/structured-outputs). Runtime validation remains mandatory even when the provider returns valid JSON.
+The OpenAI adapter uses the [OpenAI API](https://platform.openai.com/docs/api-reference/introduction) and [JSON output mode](https://developers.openai.com/api/docs/guides/structured-outputs). The Gemini adapter uses [`generateContent`](https://ai.google.dev/api/generate-content) with [structured output](https://ai.google.dev/gemini-api/docs/structured-output). Runtime validation remains mandatory even when the provider returns valid JSON.
 
 ## Capture live evidence in GitHub Actions
 
-If you prefer not to install the project locally, add a repository Actions secret named `OPENAI_API_KEY`, then manually run **Live discovery evidence** from the Actions tab. This sends the synthetic task to your OpenAI account and uses its API quota. The workflow runs discovery, removes the key from the replay environment, performs successful and not-found replays, and checks the evidence. It uploads `live-discovery-evidence` for review; it does not automatically commit files or send the submission email. Download and review that artifact, then commit its contents under `evidence/` before submitting. The separate tests workflow does not require a model key.
+If you prefer not to install the project locally, add a repository Actions secret named `OPENAI_API_KEY`, then manually run **Live discovery evidence** from the Actions tab. This sends the synthetic task to your OpenAI account and uses its API quota. The workflow runs discovery, removes the key from the replay environment, performs successful and not-found replays, and checks the evidence. It uploads `live-discovery-evidence` for review; it does not automatically commit files or send the submission email. Download and review that artifact, then commit its contents under `evidence/` before submitting. The separate tests workflow does not require a model key. This workflow currently runs the OpenAI provider only; Gemini discovery is run locally as shown above.

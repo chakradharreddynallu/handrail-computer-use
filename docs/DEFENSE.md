@@ -15,7 +15,8 @@ Use these as discussion prompts, not claims of prior production experience.
 11. **Why not publish a capability after manual intervention?** The recorded automation steps might omit what the human did. A successful session is not automatically a reusable recording.
 12. **How would you share across institutions?** Shared vendor capability + reviewed tenant bindings + pinned versions + canary checks. Never copy credentials or policy permissions between tenants.
 13. **What cannot this prototype guarantee?** Arbitrary UI generalization, financial-grade security, multi-user fencing, full redaction of arbitrary apps, or API success before a live run. Be specific, not defensive.
-14. **What evidence demonstrates quality?** A genuine model-call log with request IDs, a successful saved capability, replay with another member, a not-found outcome, and a real operator session. Unit tests alone are insufficient.
+14. **Why support more than one model provider?** The model is the least trusted, most replaceable part: it only proposes one typed decision per observation, and the engine re-validates it. Keeping that seam narrow means a provider outage, quota exhaustion or pricing change swaps one adapter, not the engine, policy or replay. Both adapters share one prompt and are held to the same `validateDecision()` contract, and replay never depends on either.
+15. **What evidence demonstrates quality?** A genuine model-call log with request IDs, a successful saved capability, replay with another member, a not-found outcome, and a real operator session. Unit tests alone are insufficient.
 
 ## Five-minute demonstration
 
