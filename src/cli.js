@@ -17,6 +17,7 @@ const { positionals, values: v } = parseArgs({
     headed: { type: "boolean", default: false },
     interactive: { type: "boolean", default: false },
     policy: { type: "string" },
+    provider: { type: "string", default: "openai" },
     "show-outputs": { type: "boolean", default: false },
   },
 });
@@ -33,8 +34,13 @@ try {
   let planner, capability;
   if (mode === "discover") {
     if (!v.goal) throw Error();
-    const { OpenAIPlanner } = await import("./planner.js");
-    planner = new OpenAIPlanner(v.goal, evidence);
+    if (v.provider === "openai") {
+      const { OpenAIPlanner } = await import("./planner.js");
+      planner = new OpenAIPlanner(v.goal, evidence);
+    } else if (v.provider === "gemini") {
+      const { GeminiPlanner } = await import("./gemini-planner.js");
+      planner = new GeminiPlanner(v.goal, evidence);
+    } else throw Error();
   } else capability = JSON.parse(readFileSync(v.artifact, "utf8"));
   surface = await BrowserSurface.create(policy, evidence, { headed: v.headed });
   await surface.open(v.target);
@@ -42,6 +48,8 @@ try {
     surface,
     evidence,
     new Handoff({ operator: v.interactive ? terminalOperator : undefined }),
+    // Gemini discovery waits on free-tier quota pacing; OpenAI discovery and replay keep the default.
+    planner && v.provider === "gemini" ? { timeoutMs: 180000 } : {},
   );
   const result = await engine.run({
     capability,
@@ -72,7 +80,7 @@ try {
   process.exitCode = result.status === "failure" ? 1 : 0;
 } catch {
   console.error(
-    "Setup failed. Check command, target, artifact, browser installation and OPENAI_API_KEY. Raw errors suppressed to avoid secret leakage.",
+    "Setup failed. Check command, target, artifact, browser installation, --provider and its API key (OPENAI_API_KEY or GEMINI_API_KEY). Raw errors suppressed to avoid secret leakage.",
   );
   process.exitCode = 1;
 } finally {
