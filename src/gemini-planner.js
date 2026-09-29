@@ -75,15 +75,18 @@ export class GeminiPlanner {
     this.calls++;
     let response = await this.request(state);
     let body;
-    if (response.status === 429) {
-      // One bounded retry: re-asking the model is safe; it cannot repeat a UI action.
+    // Rate limit (429) or transient overload (503): one bounded retry. Re-asking the model is
+    // safe; it cannot repeat a UI action.
+    const RETRY_DEFAULT_MS = { 429: 30000, 503: 10000 };
+    if (RETRY_DEFAULT_MS[response.status]) {
+      const status = response.status;
       try { body = await response.json(); } catch {}
       const hint = body?.error?.details?.find?.((d) => d?.retryDelay)?.retryDelay;
       const delayMs = Math.min(
         this.maxRetryMs,
-        /^\d+(\.\d+)?s$/.test(hint ?? "") ? Math.ceil(parseFloat(hint) * 1000) : 30000,
+        /^\d+(\.\d+)?s$/.test(hint ?? "") ? Math.ceil(parseFloat(hint) * 1000) : RETRY_DEFAULT_MS[status],
       );
-      this.evidence.emit("model_retry", { http_status: 429, delay_ms: delayMs });
+      this.evidence.emit("model_retry", { http_status: status, delay_ms: delayMs });
       await sleep(delayMs);
       body = undefined;
       response = await this.request(state);

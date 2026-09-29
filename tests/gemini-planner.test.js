@@ -128,6 +128,27 @@ test("gemini adapter retries a rate limit once, then reports it", () =>
     assert.equal(events.filter((e) => e.event === "model_retry").length, 2);
   }));
 
+test("gemini adapter retries a transient 503 once, then reports it; other 5xx are not retried", () =>
+  withGemini(async () => {
+    const events = [];
+    const planner = new GeminiPlanner("goal", sink(events), { minIntervalMs: 0, maxRetryMs: 1 });
+    const unavailable = { ok: false, status: 503, json: async () => ({ error: { status: "UNAVAILABLE" } }) };
+    let calls = 0;
+    globalThis.fetch = async () => (++calls === 1 ? unavailable : ok({ action: "click", target: "search", reason: "navigate" }));
+    assert.equal((await planner.decide(state)).target, "search");
+    assert.equal(calls, 2);
+    assert.deepEqual(events.find((e) => e.event === "model_retry"), { event: "model_retry", http_status: 503, delay_ms: 1 });
+    calls = 0;
+    globalThis.fetch = async () => (calls++, unavailable);
+    await assert.rejects(planner.decide(state), { code: "model_request_failed" });
+    assert.equal(calls, 2);
+    assert.equal(events.at(-1).provider_code, "UNAVAILABLE");
+    calls = 0;
+    globalThis.fetch = async () => (calls++, { ok: false, status: 500, json: async () => ({ error: { status: "INTERNAL" } }) });
+    await assert.rejects(planner.decide(state), { code: "model_request_failed" });
+    assert.equal(calls, 1);
+  }));
+
 test("gemini adapter requires a key and a plain model id", () =>
   withGemini(async () => {
     assert.throws(() => new GeminiPlanner("g", sink([]), { model: "../../evil?x=" }), { code: "invalid_model" });
